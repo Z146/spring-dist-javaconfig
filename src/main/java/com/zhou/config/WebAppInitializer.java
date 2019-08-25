@@ -2,7 +2,8 @@ package com.zhou.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration;
 
 /*
     AbstractAnnotationConfigDispatcherServletInitializer 会创建DispatcherServlet 和 ContextLoaderListener。
@@ -44,8 +45,8 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     处理 Multipart ,多文件上传
     可以使用 MultipartConfigElement 的多种构造器来设置其他参数
      */
-    //@Override
-    //protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-    //    registration.setMultipartConfig(new MultipartConfigElement("绝对目录"));
-    //}
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setMultipartConfig(new MultipartConfigElement("E:\\fileupload\\"));
+    }
 }

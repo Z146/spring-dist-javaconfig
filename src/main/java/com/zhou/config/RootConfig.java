@@ -47,10 +47,10 @@ public class RootConfig {
     @Bean
     public DataSource dataSource(){
         DruidDataSource dataSource = new DruidDataSource();
-        logger.info(driver);
-        logger.info(url);
-        logger.info(username);
-        logger.info(password);
+        //logger.info(driver);
+        //logger.info(url);
+        //logger.info(username);
+        //logger.info(password);
 
         dataSource.setUrl(url);
         dataSource.setDriverClassName(driver);

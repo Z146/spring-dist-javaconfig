@@ -5,6 +5,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -14,6 +17,9 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import java.nio.charset.Charset;
+import java.util.List;
 
 @Configuration
 @EnableWebMvc   //启用mvc
@@ -80,13 +86,30 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     /*
-    配置静态资源路径
+    添加静态资源路径
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
     }
 
+    /*
+    消息转换，解决 @ResponseBody 乱码的问题
+     */
+    @Bean
+    public StringHttpMessageConverter stringHttpMessageConverter(){
+        return new StringHttpMessageConverter(Charset.forName("utf-8"));
+    }
 
+    @Bean
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
+        return new MappingJackson2HttpMessageConverter();
+    }
 
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(stringHttpMessageConverter());
+        converters.add(mappingJackson2HttpMessageConverter());
+        super.configureMessageConverters(converters);
+    }
 }
